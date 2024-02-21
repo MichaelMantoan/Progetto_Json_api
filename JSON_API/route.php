@@ -56,28 +56,22 @@ addRoute('GET', '/products/(\d+)', function($id) {
 
     header('HTTP/1.1 200 OK');
     header('Content-Type: application/vnd.api+json');
+    header("Location: /products/".$newID[1]);
 
     if($product) {
 
         $response =
             [
-                'headers' => [
-                    'HTTP/1.1 200 OK',
-                    'Content-Type: application/vnd.api+json'],
-            'links' =>
-                [
-                'self' => "$id",
                 'data' =>
                     ['type' => 'products',
-                    'id' => $product->getId(),
-                    'attributes' =>
-                        [
-                        'nome' => $product->getName(),
-                        'prezzo' => $product->getPrice(),
-                        'marca' => $product->getBrand()
-                        ]
+                        'id' => $product->getId(),
+                        'attributes' =>
+                            [
+                                'nome' => $product->getName(),
+                                'prezzo' => $product->getPrice(),
+                                'marca' => $product->getBrand()
+                            ]
                     ]
-            ]
         ];
 
 
@@ -107,16 +101,8 @@ addRoute('GET', '/products', function() {
     }
     header('HTTP/1.1 200 OK');
     header('Content-Type: application/vnd.api+json');
-    $response = [
-        'http_headers' => [
-            'HTTP/1.1 200 OK',
-            'Content-Type: application/vnd.api+json'
-        ],
-        'links' => [
-            'self' => '/products'
-        ],
-        'data' => $data
-    ];
+    header("Location: /products");
+    $response = ['data' => $data];
 
     echo json_encode($response);
 });
@@ -130,15 +116,7 @@ addRoute('POST', '/products', function() {
     try {
         $newProduct = Product::Create($postData);
 
-        $response = [
-            'headers' => [
-                'HTTP/1.1 200 OK',
-                'Content-Type: application/vnd.api+json'],
-            'links' => [
-                'self' => "/products/{$newProduct->getId()}",
-                'data' => [$newProduct]
-            ]
-        ];
+        $response = [ 'data' => [$newProduct]];
 
         echo json_encode($response);
     } catch (PDOException $e) {
