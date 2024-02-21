@@ -138,8 +138,10 @@ addRoute('PUT', '/products/(\d+)', function ($id) {
     $newID = str_split($id, 10);
     $product = Product::Find($newID[1]);
 
+
     try {
-        $updatedProduct = $product->Update(['id' => $id] + $putData);
+        $updatedProduct = $product->Update($putData);
+        var_dump($product);
         if ($updatedProduct) {
             header("Location: /products/(\d+)");
             header('HTTP/1.1 200 OK');
