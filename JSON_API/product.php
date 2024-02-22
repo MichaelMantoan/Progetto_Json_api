@@ -75,12 +75,15 @@ class Product
     {
         $pdo = self::Connect();
         $stmt = $pdo->prepare("UPDATE  mantoan_michael_ecommerce.products SET name = :name, price = :price, brand = :brand WHERE id = :id");
-        $stmt->bindParam(":id",$params["id"]);
+        $stmt->bindParam(":id",$this->id);
         $stmt->bindParam("name",$params["name"]);
         $stmt->bindParam("price",$params["price"]);
         $stmt->bindParam("brand",$params["brand"]);
         if($stmt->execute())
         {
+            $stmt = $pdo->prepare("SELECT * FROM  mantoan_michael_ecommerce.products WHERE id = :id");
+            $stmt->bindParam(":id",$this->id);
+            $stmt->execute();
             return $stmt->fetchObject("product");
         }
         else

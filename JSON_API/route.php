@@ -3,7 +3,7 @@
 require_once "product.php";
 
 
-$routes = ['GET' => [], 'POST' => [], 'PUT' => [], 'DELETE' => []];
+$routes = ['GET' => [], 'POST' => [], 'PATCH' => [], 'DELETE' => []];
 
 
 function addRoute($method, $path, $callback)
@@ -132,7 +132,7 @@ addRoute('POST', '/products', function () {
 });
 
 
-addRoute('PUT', '/products/(\d+)', function ($id) {
+addRoute('PATCH', '/products/(\d+)', function ($id) {
 
     $putData = json_decode(file_get_contents('php://input'), true);
     $newID = str_split($id, 10);
@@ -140,28 +140,34 @@ addRoute('PUT', '/products/(\d+)', function ($id) {
 
 
     try {
-        $updatedProduct = $product->Update($putData);
-        var_dump($product);
-        if ($updatedProduct) {
-            header("Location: /products/(\d+)");
-            header('HTTP/1.1 200 OK');
-            header('Content-Type: application/vnd.api+json');
 
-            $response = [
-                'headers' => [
-                    'HTTP/1.1 200 OK',
-                    'Content-Type: application/vnd.api+json'],
-                'links' => [
-                    'self' => "/products/$id",
-                    'data' => [$updatedProduct]
-                ]
-            ];
+        if($putData)
+        {
+            if ($product)
+            {
+                $updatedProduct = $product->Update($putData);
 
-            echo json_encode($response, JSON_PRETTY_PRINT);
-        } else {
-            header("Location: /products/(\d+)");
-            header('HTTP/1.1 404 NOT FOUND');
-            header('Content-Type: application/vnd.api+json');
+                $response = [
+                    'data' =>
+                        ['type' => 'products',
+                            'id' => $updatedProduct->getId(),
+                            'attributes' =>
+                                [
+                                    'name' => $updatedProduct->getName(),
+                                    'price' => $updatedProduct->getPrice(),
+                                    'brand' => $updatedProduct->getBrand()
+                                ]
+                        ]
+                ];
+
+                header("Location: /products/(\d+)");
+                header('HTTP/1.1 200 OK');
+                header('Content-Type: application/vnd.api+json');
+                echo json_encode($response, JSON_PRETTY_PRINT);
+            }
+        }
+        else
+        {
             http_response_code(404);
             echo json_encode(['error' => 'Prodotto non trovato']);
         }
@@ -194,9 +200,6 @@ addRoute('DELETE', '/products/(\d+)', function ($id) {
             echo json_encode(['error' => 'Errore durante l\'eliminazione del prodotto']);
         }
     } else {
-        header("Location: /products/(\d+)");
-        header('HTTP/1.1 404 NOT FOUND');
-        header('Content-Type: application/vnd.api+json');
         http_response_code(404);
         echo json_encode(['error' => 'Prodotto non trovato']);
     }
