@@ -112,7 +112,7 @@ addRoute('POST', '/products', function () {
     $postData = json_decode(file_get_contents('php://input'), true);
 
     header("Location: /products");
-    header('HTTP/1.1 200 OK');
+    header('HTTP/1.1 201 CREATED');
     header('Content-Type: application/vnd.api+json');
 
     try {
@@ -146,7 +146,6 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
             if ($product)
             {
                 $updatedProduct = $product->Update($putData);
-
                 $response = [
                     'data' =>
                         ['type' => 'products',
@@ -160,7 +159,7 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
                         ]
                 ];
 
-                header("Location: /products/(\d+)");
+                header("Location: /products/".$newID[1]);
                 header('HTTP/1.1 200 OK');
                 header('Content-Type: application/vnd.api+json');
                 echo json_encode($response, JSON_PRETTY_PRINT);
@@ -172,7 +171,7 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
             echo json_encode(['error' => 'Prodotto non trovato']);
         }
     } catch (PDOException $e) {
-        header("Location: /products/(\d+)");
+        header("Location: /products".$newID[1]);
         header('HTTP/1.1 500 INTERNAL SERVER ERROR');
         header('Content-Type: application/vnd.api+json');
         http_response_code(500);
