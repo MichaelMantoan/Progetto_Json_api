@@ -3,9 +3,9 @@ require "Dbmanager.php";
 class Product
 {
     private $id;
-    private $name;
-    private $price;
-    private $brand;
+    private $nome;
+    private $prezzo;
+    private $marca;
 
 
     public function getId()
@@ -13,34 +13,34 @@ class Product
         return $this->id;
     }
 
-    public function getName()
+    public function getNome()
     {
-        return $this->name;
+        return $this->nome;
     }
 
-    public function setName($name)
+    public function setNome($nome)
     {
-        $this->name = $name;
+        $this->nome = $nome;
     }
 
-    public function getPrice()
+    public function getPrezzo()
     {
-        return $this->price;
+        return $this->prezzo;
     }
 
-    public function setPrice($price)
+    public function setPrezzo($prezzo)
     {
-        $this->price = $price;
+        $this->prezzo = $prezzo;
     }
 
-    public function getBrand()
+    public function getMarca()
     {
-        return $this->brand;
+        return $this->marca;
     }
 
-    public function setBrand($brand)
+    public function setMarca($marca)
     {
-        $this->brand = $brand;
+        $this->marca = $marca;
     }
 
     public static function Find($id)
@@ -58,10 +58,10 @@ class Product
     public static function Create($params)
     {
         $pdo = self::Connect();
-        $stmt = $pdo->prepare("INSERT INTO  mantoan_michael_ecommerce.products (name,price,brand) VALUES (:name,:price,:brand)");
-        $stmt->bindParam(":name", $params["name"]);
-        $stmt->bindParam(":price", $params["price"]);
-        $stmt->bindParam(":brand", $params["brand"]);
+        $stmt = $pdo->prepare("INSERT INTO  mantoan_michael_ecommerce.products (nome,marca,prezzo) VALUES (:nome,:marca,:prezzo)");
+        $stmt->bindParam(":nome", $params["nome"]);
+        $stmt->bindParam(":marca", $params["marca"]);
+        $stmt->bindParam(":prezzo", $params["prezzo"]);
         if ($stmt->execute()) {
             $stmt = $pdo->prepare("SELECT * FROM  mantoan_michael_ecommerce.products ORDER BY id DESC LIMIT 1");
             $stmt->execute();
@@ -74,11 +74,11 @@ class Product
     public function Update($params)
     {
         $pdo = self::Connect();
-        $stmt = $pdo->prepare("UPDATE  mantoan_michael_ecommerce.products SET name = :name, price = :price, brand = :brand WHERE id = :id");
+        $stmt = $pdo->prepare("UPDATE  mantoan_michael_ecommerce.products SET nome = :nome, marca = :marca, prezzo = :prezzo WHERE id = :id");
         $stmt->bindParam(":id",$this->id);
-        $stmt->bindParam("name",$params["name"]);
-        $stmt->bindParam("price",$params["price"]);
-        $stmt->bindParam("brand",$params["brand"]);
+        $stmt->bindParam("nome",$params["nome"]);
+        $stmt->bindParam("marca",$params["marca"]);
+        $stmt->bindParam("prezzo",$params["prezzo"]);
         if($stmt->execute())
         {
             $stmt = $pdo->prepare("SELECT * FROM  mantoan_michael_ecommerce.products WHERE id = :id");

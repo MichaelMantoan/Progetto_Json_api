@@ -1,6 +1,6 @@
-insert into  mantoan_michael_ecommerce.products(name, price, brand)
-values ("croce tedesca seconda classe", 29.99, "Impero tedesco"),
-       ("vaso", 9.99, "Villeroy e Boch"),
-       ("PC", 3500.99, "asus"),
-       ("corano", 30, "maometto"),
-       ("modellino lamborghini", 99.99, "Lamborghini");
+insert into  mantoan_michael_ecommerce.products(nome, marca, prezzo)
+values ("croce tedesca seconda classe", "Impero tedesco",29.99),
+       ("vaso","Villeroy e Boch",9.99),
+       ("PC","asus",3500.99),
+       ("corano","maometto",30),
+       ("modellino lamborghini","Lamborghini",99.99);

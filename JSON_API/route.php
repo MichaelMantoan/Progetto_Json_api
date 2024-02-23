@@ -69,9 +69,9 @@ addRoute('GET', '/products/(\d+)', function ($id) {
                         'id' => $product->getId(),
                         'attributes' =>
                             [
-                                'nome' => $product->getName(),
-                                'prezzo' => $product->getPrice(),
-                                'marca' => $product->getBrand()
+                                'nome' => $product->getNome(),
+                                'marca' => $product->getMarca(),
+                                'prezzo' => $product->getPrezzo()
                             ]
                     ]
             ];
@@ -93,9 +93,9 @@ addRoute('GET', '/products', function () {
             'type' => 'products',
             'id' => $product->getId(),
             'attributes' => [
-                'name' => $product->getName(),
-                'price' => $product->getPrice(),
-                'brand' => $product->getBrand()
+                'nome' => $product->getNome(),
+                'marca' => $product->getMarca(),
+                'prezzo' => $product->getPrezzo()
             ]
         ];
     }
@@ -118,7 +118,18 @@ addRoute('POST', '/products', function () {
     try {
         $newProduct = Product::Create($postData);
 
-        $response = ['data' => [$newProduct]];
+        $response =
+            ['data' =>
+                [
+                    'type' => 'products',
+                    'id' => $newProduct->getId(),
+                    'attributes' =>
+                            [
+                                'nome' => $newProduct->getNome(),
+                                'marca' => $newProduct->getMarca(),
+                                'prezzo' => $newProduct->getPrezzo()
+                ]
+        ]];
 
         echo json_encode($response, JSON_PRETTY_PRINT);
 
@@ -152,9 +163,9 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
                             'id' => $updatedProduct->getId(),
                             'attributes' =>
                                 [
-                                    'name' => $updatedProduct->getName(),
-                                    'price' => $updatedProduct->getPrice(),
-                                    'brand' => $updatedProduct->getBrand()
+                                    'nome' => $updatedProduct->getNome(),
+                                    'marca' => $updatedProduct->getMarca(),
+                                    'prezzo' => $updatedProduct->getPrezzo()
                                 ]
                         ]
                 ];
