@@ -4,9 +4,9 @@ class DbManager
 
     public static function Connect($dbname)
     {
-        $dsn = "mysql:dbname={$dbname};host=192.168.2.200";
+        $dsn = "mysql:dbname={$dbname};host=localhost";
         try {
-            $pdo = new PDO($dsn, 'mantoan_michael', 'calligraphy.countertenor.roughneck.');
+            $pdo = new PDO($dsn, 'root', '');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $pdo;
         } catch (PDOException $exception) {

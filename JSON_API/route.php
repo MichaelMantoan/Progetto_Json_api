@@ -62,19 +62,8 @@ addRoute('GET', '/products/(\d+)', function ($id) {
     header('Content-Type: application/vnd.api+json');
     if ($product) {
 
-        $response =
-            [
-                'data' =>
-                    ['type' => 'products',
-                        'id' => $product->getId(),
-                        'attributes' =>
-                            [
-                                'nome' => $product->getNome(),
-                                'marca' => $product->getMarca(),
-                                'prezzo' => $product->getPrezzo()
-                            ]
-                    ]
-            ];
+        $data[] = ['type' => 'products', 'id' => $product->getId(), 'attributes' => ['nome' => $product->getNome(), 'marca' => $product->getMarca(), 'prezzo' => $product->getPrezzo()]];
+        $response = ['data' => $data];
 
 
         echo json_encode($response, JSON_PRETTY_PRINT);
@@ -110,27 +99,14 @@ addRoute('GET', '/products', function () {
 addRoute('POST', '/products', function () {
 
     $postData = json_decode(file_get_contents('php://input'), true);
-
     header("Location: /products");
     header('HTTP/1.1 201 CREATED');
     header('Content-Type: application/vnd.api+json');
 
     try {
-        $newProduct = Product::Create($postData);
-
-        $response =
-            ['data' =>
-                [
-                    'type' => 'products',
-                    'id' => $newProduct->getId(),
-                    'attributes' =>
-                            [
-                                'nome' => $newProduct->getNome(),
-                                'marca' => $newProduct->getMarca(),
-                                'prezzo' => $newProduct->getPrezzo()
-                ]
-        ]];
-
+        $newProduct = Product::Create($postData["data"]);
+        $data[] = ['type' => 'products', 'id' => $newProduct->getId(), 'attributes' => ['nome' => $newProduct->getNome(), 'marca' => $newProduct->getMarca(), 'prezzo' => $newProduct->getPrezzo()]];
+        $response = ['data' => $data];
         echo json_encode($response, JSON_PRETTY_PRINT);
 
     } catch (PDOException $e) {
@@ -156,19 +132,9 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
         {
             if ($product)
             {
-                $updatedProduct = $product->Update($putData);
-                $response = [
-                    'data' =>
-                        ['type' => 'products',
-                            'id' => $updatedProduct->getId(),
-                            'attributes' =>
-                                [
-                                    'nome' => $updatedProduct->getNome(),
-                                    'marca' => $updatedProduct->getMarca(),
-                                    'prezzo' => $updatedProduct->getPrezzo()
-                                ]
-                        ]
-                ];
+                $updatedProduct = $product->Update($putData["data"]);
+                $data[] = ['type' => 'products', 'id' => $updatedProduct->getId(), 'attributes' => ['nome' => $updatedProduct->getNome(), 'marca' => $updatedProduct->getMarca(), 'prezzo' => $updatedProduct->getPrezzo()]];
+                $response = ['data' => $data];
 
                 header("Location: /products/".$newID[1]);
                 header('HTTP/1.1 200 OK');
