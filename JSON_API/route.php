@@ -51,18 +51,17 @@ function handleRequest()
 }
 
 
-addRoute('GET', '/products/(\d+)', function ($id) {
+addRoute('GET', '/products/(\d+)', function ($matches) {
 
-
-    $newID = str_split($id, 10);
-    $data = [];
-    $product = Product::Find($newID[1]);
-    header("Location: /products/" . $newID[1]);
+    $parts = explode('/', $matches);
+    $id = end($parts);
+    $product = Product::Find($id);
+    header("Location: /products/" . $id);
     header('HTTP/1.1 200 OK');
     header('Content-Type: application/vnd.api+json');
     if ($product) {
 
-        $data[] = 
+        $data = 
         [
             'type' => 'products', 
             'id' => $product->getId(), 
@@ -105,18 +104,20 @@ addRoute('GET', '/products', function () {
     header('Content-Type: application/vnd.api+json');
 
     $response = ['data' => $data];
-
     echo json_encode($response, JSON_PRETTY_PRINT);
 });
-addRoute('POST', '/products', function () {
 
-    $postData = json_decode(file_get_contents('php://input'), true);
-    header("Location: /products");
-    header('HTTP/1.1 201 CREATED');
-    header('Content-Type: application/vnd.api+json');
+addRoute('POST', '/products', function(){
+
     $data=[];
+    if (isset($_POST['data']))
+        $postData = $_POST;
+    else
+        $postData = json_decode(file_get_contents("php://input"), true);
     try {
-        $newProduct = Product::Create($postData["data"]);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($postData['data']['attributes']['marca'], $postData['data']['attributes']['nome'], $postData['data']['attributes']['prezzo'])) 
+        {
+        $newProduct = Product::Create($postData["data"]["attributes"]);       
         $data = 
         [
             'type' => 'products', 
@@ -128,9 +129,18 @@ addRoute('POST', '/products', function () {
                     'prezzo' => $newProduct->getPrezzo()
                 ]
         ];
-
+        
         $response = ['data' => $data];
         echo json_encode($response, JSON_PRETTY_PRINT);
+        header("Location: /products");
+        header('HTTP/1.1 201 CREATED');
+        http_response_code(201);
+        header('Content-Type: application/vnd.api+json');
+    }
+    else 
+    {
+        http_response_code(500);
+    }
 
     } catch (PDOException $e) {
         header("Location: /products");
@@ -142,46 +152,47 @@ addRoute('POST', '/products', function () {
 });
 
 
-addRoute('PATCH', '/products/(\d+)', function ($id) {
+addRoute('PATCH', '/products/(\d+)', function ($matches) 
+{
 
-    $putData = json_decode(file_get_contents('php://input'), true);
-    $newID = str_split($id, 10);
-    $product = Product::Find($newID[1]);
-    $data = [];
+    $parts = explode('/', $matches);
+    $id = end($parts);
+    $patchData = json_decode(file_get_contents("php://input"), true);
+    $product = Product::Find($id);
 
     try {
 
-        if($putData)
+        if($patchData)
         {
-            if ($product)
-            {
-                $updatedProduct = $product->Update($putData["data"]);
-                $data[] = 
-                [
-                    'type' => 'products', 
-                    'id' => $updatedProduct->getId(), 
-                    'attributes' => 
-                        [
-                            'nome' => $updatedProduct->getNome(), 
-                            'marca' => $updatedProduct->getMarca(), 
-                            'prezzo' => $updatedProduct->getPrezzo()
-                        ]
-                ];
-                $response = ['data' => $data];
+                if ($product)
+                {
+                    $updatedProduct = $product->Update($patchData["data"]["attributes"]);
+                    $data = 
+                    [
+                        'type' => 'products', 
+                        'id' => $updatedProduct->getId(), 
+                        'attributes' => 
+                            [
+                                'nome' => $updatedProduct->getNome(), 
+                                'marca' => $updatedProduct->getMarca(), 
+                                'prezzo' => $updatedProduct->getPrezzo()
+                            ]
+                    ];
+                    $response = ['data' => $data];
+                    header("Location: /products/".$id);
+                    header('HTTP/1.1 200 OK');
+                    header('Content-Type: application/vnd.api+json');
+                    echo json_encode($response, JSON_PRETTY_PRINT);
+                }
 
-                header("Location: /products/".$newID[1]);
-                header('HTTP/1.1 200 OK');
-                header('Content-Type: application/vnd.api+json');
-                echo json_encode($response, JSON_PRETTY_PRINT);
+            else
+            {
+                http_response_code(404);
+                echo json_encode(['error' => 'Prodotto non trovato']);
             }
         }
-        else
-        {
-            http_response_code(404);
-            echo json_encode(['error' => 'Prodotto non trovato']);
-        }
     } catch (PDOException $e) {
-        header("Location: /products".$newID[1]);
+        header("Location: /products".$id);
         header('HTTP/1.1 500 INTERNAL SERVER ERROR');
         header('Content-Type: application/vnd.api+json');
         http_response_code(500);
