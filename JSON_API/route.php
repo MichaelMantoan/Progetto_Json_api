@@ -55,14 +55,24 @@ addRoute('GET', '/products/(\d+)', function ($id) {
 
 
     $newID = str_split($id, 10);
-
+    $data = [];
     $product = Product::Find($newID[1]);
     header("Location: /products/" . $newID[1]);
     header('HTTP/1.1 200 OK');
     header('Content-Type: application/vnd.api+json');
     if ($product) {
 
-        $data[] = ['type' => 'products', 'id' => $product->getId(), 'attributes' => ['nome' => $product->getNome(), 'marca' => $product->getMarca(), 'prezzo' => $product->getPrezzo()]];
+        $data[] = 
+        [
+            'type' => 'products', 
+            'id' => $product->getId(), 
+            'attributes' => 
+                [
+                    'nome' => $product->getNome(), 
+                    'marca' => $product->getMarca(), 
+                    'prezzo' => $product->getPrezzo()
+                ]
+        ];
         $response = ['data' => $data];
 
 
@@ -78,10 +88,12 @@ addRoute('GET', '/products', function () {
     $products = Product::FetchAll();
     $data = [];
     foreach ($products as $product) {
-        $data[] = [
+        $data[] = 
+        [
             'type' => 'products',
             'id' => $product->getId(),
-            'attributes' => [
+            'attributes' => 
+            [
                 'nome' => $product->getNome(),
                 'marca' => $product->getMarca(),
                 'prezzo' => $product->getPrezzo()
@@ -102,10 +114,21 @@ addRoute('POST', '/products', function () {
     header("Location: /products");
     header('HTTP/1.1 201 CREATED');
     header('Content-Type: application/vnd.api+json');
-
+    $data=[];
     try {
         $newProduct = Product::Create($postData["data"]);
-        $data[] = ['type' => 'products', 'id' => $newProduct->getId(), 'attributes' => ['nome' => $newProduct->getNome(), 'marca' => $newProduct->getMarca(), 'prezzo' => $newProduct->getPrezzo()]];
+        $data = 
+        [
+            'type' => 'products', 
+            'id' => $newProduct->getId(), 
+            'attributes' => 
+                [
+                    'nome' => $newProduct->getNome(), 
+                    'marca' => $newProduct->getMarca(), 
+                    'prezzo' => $newProduct->getPrezzo()
+                ]
+        ];
+
         $response = ['data' => $data];
         echo json_encode($response, JSON_PRETTY_PRINT);
 
@@ -124,7 +147,7 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
     $putData = json_decode(file_get_contents('php://input'), true);
     $newID = str_split($id, 10);
     $product = Product::Find($newID[1]);
-
+    $data = [];
 
     try {
 
@@ -133,7 +156,17 @@ addRoute('PATCH', '/products/(\d+)', function ($id) {
             if ($product)
             {
                 $updatedProduct = $product->Update($putData["data"]);
-                $data[] = ['type' => 'products', 'id' => $updatedProduct->getId(), 'attributes' => ['nome' => $updatedProduct->getNome(), 'marca' => $updatedProduct->getMarca(), 'prezzo' => $updatedProduct->getPrezzo()]];
+                $data[] = 
+                [
+                    'type' => 'products', 
+                    'id' => $updatedProduct->getId(), 
+                    'attributes' => 
+                        [
+                            'nome' => $updatedProduct->getNome(), 
+                            'marca' => $updatedProduct->getMarca(), 
+                            'prezzo' => $updatedProduct->getPrezzo()
+                        ]
+                ];
                 $response = ['data' => $data];
 
                 header("Location: /products/".$newID[1]);
