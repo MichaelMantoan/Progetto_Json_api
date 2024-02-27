@@ -151,9 +151,8 @@ addRoute('POST', '/products', function(){
     }
 });
 
+addRoute('PATCH', '/products/(\d+)', function ($matches) {
 
-addRoute('PATCH', '/products/(\d+)', function ($matches) 
-{
 
     $parts = explode('/', $matches);
     $id = end($parts);
@@ -161,44 +160,44 @@ addRoute('PATCH', '/products/(\d+)', function ($matches)
     $product = Product::Find($id);
 
     try {
+        if ($patchData && $product) {
+            $updatedProduct = $product->Update($patchData["data"]["attributes"]);
 
-        if($patchData)
-        {
-                if ($product)
-                {
-                    $updatedProduct = $product->Update($patchData["data"]["attributes"]);
-                    $data = 
-                    [
-                        'type' => 'products', 
-                        'id' => $updatedProduct->getId(), 
-                        'attributes' => 
-                            [
-                                'nome' => $updatedProduct->getNome(), 
-                                'marca' => $updatedProduct->getMarca(), 
-                                'prezzo' => $updatedProduct->getPrezzo()
-                            ]
-                    ];
-                    $response = ['data' => $data];
-                    header("Location: /products/".$id);
-                    header('HTTP/1.1 200 OK');
-                    header('Content-Type: application/vnd.api+json');
-                    echo json_encode($response, JSON_PRETTY_PRINT);
-                }
+            $data = [
+                'type' => 'products', 
+                'id' => $updatedProduct->getId(), 
+                'attributes' => [
+                    'nome' => $updatedProduct->getNome(), 
+                    'marca' => $updatedProduct->getMarca(), 
+                    'prezzo' => $updatedProduct->getPrezzo()
+                ]
+            ];
 
-            else
-            {
-                http_response_code(404);
-                echo json_encode(['error' => 'Prodotto non trovato']);
-            }
+
+            $response = ['data' => $data];
+
+
+            header("Location: /products/".$id);
+            header('HTTP/1.1 200 OK');
+            header('Content-Type: application/vnd.api+json');
+
+
+            echo json_encode($response, JSON_PRETTY_PRINT);
+        } else {
+
+            http_response_code(404);
+            echo json_encode(['error' => 'Prodotto non trovato']);
         }
     } catch (PDOException $e) {
-        header("Location: /products".$id);
+
+        header("Location: /products/".$id);
         header('HTTP/1.1 500 INTERNAL SERVER ERROR');
         header('Content-Type: application/vnd.api+json');
         http_response_code(500);
-        echo json_encode(['error' => 'Errore nell\'aggiornamento del prodotto']);
+        echo json_encode(['error' => 'Errore nell aggiornamento del prodotto']);
     }
 });
+
 
 
 addRoute('DELETE', '/products/(\d+)', function ($id) {
