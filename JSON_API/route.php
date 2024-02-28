@@ -1,24 +1,23 @@
-<?php
-
+// Includi il file contenente la definizione della classe Product
 require_once "product.php";
 
-
+// Definizione delle rotte per i diversi metodi HTTP
 $routes = ['GET' => [], 'POST' => [], 'PATCH' => [], 'DELETE' => []];
 
-
+// Funzione per aggiungere una nuova route
 function addRoute($method, $path, $callback)
 {
     global $routes;
     $routes[$method][$path] = $callback;
 }
 
-
+// Ottieni il metodo della richiesta HTTP
 function getRequestMethod()
 {
     return $_SERVER['REQUEST_METHOD'];
 }
 
-
+// Ottieni il percorso della richiesta
 function getRequestPath()
 {
     $path = $_SERVER['REQUEST_URI'];
@@ -26,7 +25,7 @@ function getRequestPath()
     return rtrim($path, '/');
 }
 
-
+// Gestisci la richiesta in base alle rotte definite
 function handleRequest()
 {
     global $routes;
@@ -34,16 +33,18 @@ function handleRequest()
     $method = getRequestMethod();
     $path = getRequestPath();
 
-
+    // Controlla se esiste una route per il metodo e il percorso specificati
     if (isset($routes[$method])) {
         foreach ($routes[$method] as $routePath => $callback) {
             if (preg_match('#^' . $routePath . '$#', $path, $matches)) {
+                // Chiama la funzione di callback associata alla route
                 call_user_func_array($callback, $matches);
                 return;
             }
         }
     }
 
+    // Se non viene trovata una corrispondenza, restituisci un errore 404
     http_response_code(404);
     echo "404 Not Found";
 }
