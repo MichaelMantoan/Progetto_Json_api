@@ -37,9 +37,7 @@ function handleRequest()
 
     if (isset($routes[$method])) {
         foreach ($routes[$method] as $routePath => $callback) {
-
             if (preg_match('#^' . $routePath . '$#', $path, $matches)) {
-                // Chiamata al callback passando l'ID come parametro
                 call_user_func_array($callback, $matches);
                 return;
             }
@@ -52,15 +50,13 @@ function handleRequest()
 
 
 addRoute('GET', '/products/(\d+)', function ($matches) {
-
     $parts = explode('/', $matches);
     $id = end($parts);
     $product = Product::Find($id);
-
+    header("Location: /products/" . $id);
+    http_response_code(200);
+    header('Content-Type: application/vnd.api+json');
     if ($product) {
-        header("Location: /products/" . $id);
-        header('HTTP/1.1 200 OK');
-        header('Content-Type: application/vnd.api+json');
         $data =
             [
                 'type' => 'products',
@@ -73,11 +69,8 @@ addRoute('GET', '/products/(\d+)', function ($matches) {
                     ]
             ];
         $response = ['data' => $data];
-
-
         echo json_encode($response, JSON_PRETTY_PRINT);
     } else {
-
         http_response_code(404);
         echo json_encode(['error' => 'Prodotto non trovato']);
     }
@@ -99,10 +92,10 @@ addRoute('GET', '/products', function () {
                     ]
             ];
     }
-    header("Location: /products");
-    header('HTTP/1.1 200 OK');
-    header('Content-Type: application/vnd.api+json');
 
+    header("Location: /products");
+    http_response_code(200);
+    header('Content-Type: application/vnd.api+json');
     $response = ['data' => $data];
     echo json_encode($response, JSON_PRETTY_PRINT);
 });
@@ -132,16 +125,11 @@ addRoute('POST', '/products', function () {
             $response = ['data' => $data];
             echo json_encode($response, JSON_PRETTY_PRINT);
             header("Location: /products");
-            header('HTTP/1.1 201 CREATED');
             http_response_code(201);
             header('Content-Type: application/vnd.api+json');
-        } else {
-            http_response_code(500);
         }
-
     } catch (PDOException $e) {
         header("Location: /products");
-        header('HTTP/1.1 500 INTERNAL SERVER ERROR');
         header('Content-Type: application/vnd.api+json');
         http_response_code(500);
         echo json_encode(['error' => 'Errore nella creazione del prodotto']);
@@ -159,7 +147,6 @@ addRoute('PATCH', '/products/(\d+)', function ($matches) {
     try {
         if ($patchData && $product) {
             $updatedProduct = $product->Update($patchData["data"]["attributes"]);
-
             $data = [
                 'type' => 'products',
                 'id' => $updatedProduct->getId(),
@@ -170,25 +157,18 @@ addRoute('PATCH', '/products/(\d+)', function ($matches) {
                 ]
             ];
 
-
             $response = ['data' => $data];
 
-
             header("Location: /products/" . $id);
-            header('HTTP/1.1 200 OK');
+            http_response_code(200);
             header('Content-Type: application/vnd.api+json');
-
-
             echo json_encode($response, JSON_PRETTY_PRINT);
         } else {
-
             http_response_code(404);
             echo json_encode(['error' => 'Prodotto non trovato']);
         }
     } catch (PDOException $e) {
-
         header("Location: /products/" . $id);
-        header('HTTP/1.1 500 INTERNAL SERVER ERROR');
         header('Content-Type: application/vnd.api+json');
         http_response_code(500);
         echo json_encode(['error' => 'Errore nell aggiornamento del prodotto']);
@@ -196,20 +176,17 @@ addRoute('PATCH', '/products/(\d+)', function ($matches) {
 });
 
 
-addRoute('DELETE', '/products/(\d+)', function ($id) {
 
+addRoute('DELETE', '/products/(\d+)', function ($id) {
     $newID = str_split($id, 10);
     $product = Product::Find($newID[1]);
     if ($product) {
         if ($product->Delete()) {
             header("Location: /products/(\d+)");
-            header('HTTP/1.1 204 NO CONTENT');
             header('Content-Type: application/vnd.api+json');
-
             http_response_code(204);
         } else {
             header("Location: /products/(\d+)");
-            header('HTTP/1.1 500 INTERNAL SERVER ERROR');
             header('Content-Type: application/vnd.api+json');
             http_response_code(500);
             echo json_encode(['error' => 'Errore durante l\'eliminazione del prodotto']);
