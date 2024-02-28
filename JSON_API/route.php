@@ -56,22 +56,22 @@ addRoute('GET', '/products/(\d+)', function ($matches) {
     $parts = explode('/', $matches);
     $id = end($parts);
     $product = Product::Find($id);
-    header("Location: /products/" . $id);
-    header('HTTP/1.1 200 OK');
-    header('Content-Type: application/vnd.api+json');
-    if ($product) {
 
-        $data = 
-        [
-            'type' => 'products', 
-            'id' => $product->getId(), 
-            'attributes' => 
-                [
-                    'nome' => $product->getNome(), 
-                    'marca' => $product->getMarca(), 
-                    'prezzo' => $product->getPrezzo()
-                ]
-        ];
+    if ($product) {
+        header("Location: /products/" . $id);
+        header('HTTP/1.1 200 OK');
+        header('Content-Type: application/vnd.api+json');
+        $data =
+            [
+                'type' => 'products',
+                'id' => $product->getId(),
+                'attributes' =>
+                    [
+                        'nome' => $product->getNome(),
+                        'marca' => $product->getMarca(),
+                        'prezzo' => $product->getPrezzo()
+                    ]
+            ];
         $response = ['data' => $data];
 
 
@@ -87,17 +87,17 @@ addRoute('GET', '/products', function () {
     $products = Product::FetchAll();
     $data = [];
     foreach ($products as $product) {
-        $data[] = 
-        [
-            'type' => 'products',
-            'id' => $product->getId(),
-            'attributes' => 
+        $data[] =
             [
-                'nome' => $product->getNome(),
-                'marca' => $product->getMarca(),
-                'prezzo' => $product->getPrezzo()
-            ]
-        ];
+                'type' => 'products',
+                'id' => $product->getId(),
+                'attributes' =>
+                    [
+                        'nome' => $product->getNome(),
+                        'marca' => $product->getMarca(),
+                        'prezzo' => $product->getPrezzo()
+                    ]
+            ];
     }
     header("Location: /products");
     header('HTTP/1.1 200 OK');
@@ -107,40 +107,37 @@ addRoute('GET', '/products', function () {
     echo json_encode($response, JSON_PRETTY_PRINT);
 });
 
-addRoute('POST', '/products', function(){
+addRoute('POST', '/products', function () {
 
-    $data=[];
+    $data = [];
     if (isset($_POST['data']))
         $postData = $_POST;
     else
         $postData = json_decode(file_get_contents("php://input"), true);
     try {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($postData['data']['attributes']['marca'], $postData['data']['attributes']['nome'], $postData['data']['attributes']['prezzo'])) 
-        {
-        $newProduct = Product::Create($postData["data"]["attributes"]);       
-        $data = 
-        [
-            'type' => 'products', 
-            'id' => $newProduct->getId(), 
-            'attributes' => 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($postData['data']['attributes']['marca'], $postData['data']['attributes']['nome'], $postData['data']['attributes']['prezzo'])) {
+            $newProduct = Product::Create($postData["data"]["attributes"]);
+            $data =
                 [
-                    'nome' => $newProduct->getNome(), 
-                    'marca' => $newProduct->getMarca(), 
-                    'prezzo' => $newProduct->getPrezzo()
-                ]
-        ];
-        
-        $response = ['data' => $data];
-        echo json_encode($response, JSON_PRETTY_PRINT);
-        header("Location: /products");
-        header('HTTP/1.1 201 CREATED');
-        http_response_code(201);
-        header('Content-Type: application/vnd.api+json');
-    }
-    else 
-    {
-        http_response_code(500);
-    }
+                    'type' => 'products',
+                    'id' => $newProduct->getId(),
+                    'attributes' =>
+                        [
+                            'nome' => $newProduct->getNome(),
+                            'marca' => $newProduct->getMarca(),
+                            'prezzo' => $newProduct->getPrezzo()
+                        ]
+                ];
+
+            $response = ['data' => $data];
+            echo json_encode($response, JSON_PRETTY_PRINT);
+            header("Location: /products");
+            header('HTTP/1.1 201 CREATED');
+            http_response_code(201);
+            header('Content-Type: application/vnd.api+json');
+        } else {
+            http_response_code(500);
+        }
 
     } catch (PDOException $e) {
         header("Location: /products");
@@ -164,11 +161,11 @@ addRoute('PATCH', '/products/(\d+)', function ($matches) {
             $updatedProduct = $product->Update($patchData["data"]["attributes"]);
 
             $data = [
-                'type' => 'products', 
-                'id' => $updatedProduct->getId(), 
+                'type' => 'products',
+                'id' => $updatedProduct->getId(),
                 'attributes' => [
-                    'nome' => $updatedProduct->getNome(), 
-                    'marca' => $updatedProduct->getMarca(), 
+                    'nome' => $updatedProduct->getNome(),
+                    'marca' => $updatedProduct->getMarca(),
                     'prezzo' => $updatedProduct->getPrezzo()
                 ]
             ];
@@ -177,7 +174,7 @@ addRoute('PATCH', '/products/(\d+)', function ($matches) {
             $response = ['data' => $data];
 
 
-            header("Location: /products/".$id);
+            header("Location: /products/" . $id);
             header('HTTP/1.1 200 OK');
             header('Content-Type: application/vnd.api+json');
 
@@ -190,14 +187,13 @@ addRoute('PATCH', '/products/(\d+)', function ($matches) {
         }
     } catch (PDOException $e) {
 
-        header("Location: /products/".$id);
+        header("Location: /products/" . $id);
         header('HTTP/1.1 500 INTERNAL SERVER ERROR');
         header('Content-Type: application/vnd.api+json');
         http_response_code(500);
         echo json_encode(['error' => 'Errore nell aggiornamento del prodotto']);
     }
 });
-
 
 
 addRoute('DELETE', '/products/(\d+)', function ($id) {
