@@ -1,3 +1,4 @@
+<?php
 // Includi il file contenente la definizione della classe Product
 require_once "product.php";
 
