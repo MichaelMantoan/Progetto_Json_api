@@ -3,7 +3,7 @@ require "faraday"
 
 raise "Usa 'rspec #{__FILE__}'" unless defined? RSpec
 
-addresses = ["192.168.2.210"]
+addresses = ["192.168.2.209"]
 port = 8081
 
 $random_price = rand(10..10000)

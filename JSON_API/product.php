@@ -114,7 +114,7 @@ class Product
         return true;
     }
 
-    public static function Connect()
+    private static function Connect()
     {
         return DbManager::Connect("mantoan_michael_ecommerce");
     }

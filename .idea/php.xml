@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="highlightLevel" value="WARNING" />
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/JSON_API/vendor/composer" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/cli-parser" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/code-unit" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/complexity" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/lines-of-code" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/type" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/phar-io/manifest" />
+      <path value="$PROJECT_DIR$/JSON_API/vendor/phar-io/version" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/JSON_API/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+</project>
