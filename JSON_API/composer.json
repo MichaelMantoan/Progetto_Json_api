@@ -1,0 +1,20 @@
+{
+    "name": "michaelmantoan/progetto-json-api",
+    "description": "jsonapi",
+    "type": "project",
+    "authors": [
+        {
+            "name": "michael.mantoan",
+            "email": "mantoan.michael@iisviolamarchesini.edu.it"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "jsonapi\\": "src/"
+        }
+    }
+}
+
