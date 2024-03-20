@@ -18,7 +18,7 @@
             <th>Nome</th>
             <th>Marca</th>
             <th>Prezzo</th>
-            <th>Azioni</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@
     </table>
     <!-- Bottone per aggiungere un nuovo elemento -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAggiungiProdotto">
-        Aggiungi Prodotto
+        Crea
     </button>
 </div>
 
@@ -134,11 +134,22 @@
         //   success: function(response) {
         //     // Ricarica i dati della tabella dopo l'eliminazione
         //     caricaDatiTabella();
-        //   },
-        //   error: function(error) {
-        //     console.error('Errore durante l\'eliminazione:', error);
-        //   }
-        // });
+// Funzione per eliminare un elemento dalla tabella
+        function eliminaElemento(id) {
+            // Esegui una chiamata AJAX per eliminare l'elemento dall'API
+            // Esempio:
+            // $.ajax({
+            //   url: 'url_api/delete_product/' + id,
+            //   method: 'DELETE',
+            //   success: function(response) {
+            //     // Ricarica i dati della tabella dopo l'eliminazione
+            //     caricaDatiTabella();
+            //   },
+            //   error: function(error) {
+            //     console.error('Errore durante l\'eliminazione:', error);
+            //   }
+            // });
+        }
     }
 </script>
 
