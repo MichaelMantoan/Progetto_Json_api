@@ -1,0 +1,77 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2; /* Grigio chiaro */
+    background-image: url('https://images.unsplash.com/photo-1511556820780-a49f571f1d35'); /* URL dell'immagine di sfondo */
+    background-size: cover; /* Copre l'intero sfondo */
+    background-position: center; /* Centra l'immagine di sfondo */
+    background-repeat: no-repeat; /* Non ripetere l'immagine di sfondo */
+
+}
+
+/* Titolo della tabella */
+h1 {
+    margin-bottom: 20px;
+    font-size: 36px;
+    color: #333; /* Nero */
+}
+
+/* Pulsante "Crea" */
+.btn.btn-primary {
+    margin-bottom: 20px;
+    background-color: #4CAF50; /* Verde smeraldo */
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn.btn-primary:hover {
+    background-color: #45a049; /* Verde più scuro al passaggio del mouse */
+}
+
+/* Bottoni Azioni */
+.azioni-button {
+    margin-right: 5px;
+    background-color: #f44336; /* Rosso corallo */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.azioni-button:hover {
+    background-color: #d32f2f; /* Rosso più scuro al passaggio del mouse */
+}
+
+/* Form modale */
+.modal-body input {
+    margin-bottom: 20px;
+    padding: 14px;
+    border: 2px solid #3498db; /* Blu chiaro */
+    border-radius: 8px;
+}
+
+.modal-body input:focus {
+    outline: none;
+    border-color: #4CAF50; /* Verde quando il campo di input ha il focus */
+}
