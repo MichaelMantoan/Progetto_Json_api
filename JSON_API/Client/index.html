@@ -14,8 +14,8 @@
 <body>
 
 <div class="container mt-5">
-    <h1>Tabella Prodotti</h1>
-    <table class="table">
+    <h2>Tabella Prodotti</h2>
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
@@ -25,61 +25,31 @@
             <th>Azioni</th>
         </tr>
         </thead>
-        <tbody>
-        <!-- Qui verranno inserite dinamicamente le righe della tabella -->
+        <tbody id="productTableBody">
+        <!-- Righe della tabella verranno inserite dinamicamente qui -->
         </tbody>
     </table>
-    <!-- Bottone per aggiungere un nuovo elemento -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAggiungiProdotto">
-        Crea
-    </button>
+    <button type="button" class="btn btn-primary" onclick="openActionModal('Crea')">Crea</button>
 </div>
 
-<!-- Modale per aggiungere/modificare un prodotto -->
-<div class="modal fade" id="modalAggiungiProdotto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Modale per Azioni -->
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="actionModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Aggiungi/Modifica Prodotto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="actionModalLabel"></h5>
             </div>
             <div class="modal-body">
-                <form id="formProdotto">
-                    <input type="hidden" id="prodottoId">
-                    <div class="mb-3">
-                        <label for="nome" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome">
-                    </div>
-                    <div class="mb-3">
-                        <label for="marca" class="form-label">Marca</label>
-                        <input type="text" class="form-control" id="marca" name="marca">
-                    </div>
-                    <div class="mb-3">
-                        <label for="prezzo" class="form-label">Prezzo</label>
-                        <input type="text" class="form-control" id="prezzo" name="prezzo">
-                    </div>
-                    <button type="button" class="btn btn-primary" onclick="salvaProdotto()">Salva</button>
-                </form>
+                <!-- Contenuto del form dinamico verrà inserito qui -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary" id="saveActionBtn">Salva</button>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modale per visualizzare i dettagli del prodotto -->
-<div class="modal fade" id="modalDettagliProdotto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Dettagli Prodotto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="dettagliProdotto">
-                <!-- Contenuto dei dettagli del prodotto verrà inserito qui dinamicamente tramite JavaScript -->
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Link al file JavaScript di Bootstrap tramite CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Link al file JavaScript CRUD.js -->
