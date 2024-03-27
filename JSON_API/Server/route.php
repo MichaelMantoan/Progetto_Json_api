@@ -1,7 +1,14 @@
 <?php
 // Includi il file contenente la definizione della classe Product
 require_once "product.php";
-
+$clientURL = $_SERVER['HTTP_ORIGIN'];
+header("Access-Control-Allow-Origin: *");
+// Verifica se l'origine della richiesta corrisponde all'URL del tuo client
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    // Abilita CORS solo per l'URL del tuo client
+    header("Access-Control-Allow-Origin: $clientURL");
+    header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
+}
 // Definizione delle rotte per i diversi metodi HTTP
 $routes = ['GET' => [], 'POST' => [], 'PATCH' => [], 'DELETE' => []];
 
