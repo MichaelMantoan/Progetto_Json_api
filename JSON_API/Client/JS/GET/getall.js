@@ -24,19 +24,19 @@ export function caricaDatiTabella() {
                         <td>${prodotto.attributes.marca}</td>
                         <td>${prodotto.attributes.prezzo}</td>
                         <td>
-                            <button class="btn btn-primary show-btn" data-id="${prodotto.id}">Show</button>
+                            <button class="btn btn-primary show-btn" >Show</button>
                             <button class="btn btn-success edit-btn">Edit</button>
                             <button class="btn btn-danger delete-btn">Delete</button>
                         </td>
                     `;
                 tbody.appendChild(riga);
 
-                // Aggiungi gestori di eventi per i pulsanti appena creati
+
                 riga.querySelector('.show-btn').addEventListener('click', () => {
                     mostraDettagli(prodotto.id);
                 });
 
-                // Aggiungi altri gestori di eventi per gli altri pulsanti, se necessario
+
             });
         })
         .catch(error => console.error(error.message));
