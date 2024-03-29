@@ -1,7 +1,8 @@
+import { mostraDettagli } from "./get.js";
+
 const serverURL = 'http://127.0.0.1:8081/products';
 
-// Funzione per caricare i dati della tabella prodotti
- function caricaDatiTabella() {
+export function caricaDatiTabella() {
     fetch(serverURL)
         .then(response => {
             if (!response.ok) {
@@ -23,16 +24,23 @@ const serverURL = 'http://127.0.0.1:8081/products';
                         <td>${prodotto.attributes.marca}</td>
                         <td>${prodotto.attributes.prezzo}</td>
                         <td>
-                            <button class="btn btn-primary" onclick="mostraDettagli(${prodotto.id})">Show</button>
-                            <button class="btn btn-success" onclick="apriModale('modifica', ${prodotto.id})">Edit</button>
-                            <button class="btn btn-danger" onclick="apriModale('elimina', ${prodotto.id})">Delete</button>
+                            <button class="btn btn-primary show-btn" data-id="${prodotto.id}">Show</button>
+                            <button class="btn btn-success edit-btn">Edit</button>
+                            <button class="btn btn-danger delete-btn">Delete</button>
                         </td>
                     `;
                 tbody.appendChild(riga);
+
+                // Aggiungi gestori di eventi per i pulsanti appena creati
+                riga.querySelector('.show-btn').addEventListener('click', () => {
+                    mostraDettagli(prodotto.id);
+                });
+
+                // Aggiungi altri gestori di eventi per gli altri pulsanti, se necessario
             });
         })
         .catch(error => console.error(error.message));
 }
 
 // Chiamata iniziale per caricare i dati della tabella all'avvio della pagina
-document.addEventListener('DOMContentLoaded', () => {caricaDatiTabella()});
+document.addEventListener('DOMContentLoaded', caricaDatiTabella);

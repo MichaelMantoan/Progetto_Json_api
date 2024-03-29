@@ -1,5 +1,8 @@
+import { caricaDatiTabella } from "./getall.js";
 
-function mostraDettagli(id) {
+const serverURL = 'http://127.0.0.1:8081/products';
+
+export function mostraDettagli(id) {
     fetch(`${serverURL}/${id}`)
         .then(response => {
             if (!response.ok) {
@@ -8,11 +11,12 @@ function mostraDettagli(id) {
             return response.json();
         })
         .then(data => {
-            const prodotto = data.data; // Ottieni l'intero oggetto prodotto
-            mostraModal(prodotto); // Mostra il modal con i dettagli del prodotto
+            const prodotto = data.data;
+            mostraModal(prodotto);
         })
         .catch(error => console.error(error.message));
 }
+
 function mostraModal(prodotto) {
     const modalHTML = `
         <div class="modal fade" id="dettagliProdottoModal" tabindex="-1" aria-labelledby="dettagliProdottoModalLabel" aria-hidden="true">
@@ -35,7 +39,30 @@ function mostraModal(prodotto) {
             </div>
         </div>
     `;
+
+    // Inserisci il modalHTML nel body del documento
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    const modal = new bootstrap.Modal(document.getElementById('dettagliProdottoModal'));
+
+    // Ottieni l'elemento del modal
+    const modalElement = document.getElementById('dettagliProdottoModal');
+
+    // Crea un observer per monitorare l'attributo aria-hidden del modal
+    const observer = new MutationObserver(mutationsList => {
+        for (const mutation of mutationsList) {
+            if (mutation.attributeName === 'aria-hidden' && modalElement.getAttribute('aria-hidden') === 'true') {
+                // Rimuovi l'elemento del modal dal DOM quando viene nascosto
+                modalElement.remove();
+                observer.disconnect(); // Scollega l'observer dopo aver rimosso il modal
+            }
+        }
+    });
+
+    // Aggiungi l'observer all'elemento del modal
+    observer.observe(modalElement, { attributes: true });
+
+    // Mostra il modal
+    const modal = new bootstrap.Modal(modalElement);
     modal.show();
 }
+
+document.addEventListener('DOMContentLoaded', caricaDatiTabella);
