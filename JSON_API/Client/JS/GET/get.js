@@ -19,7 +19,7 @@ export function mostraDettagli(id) {
 
 function mostraModal(prodotto) {
     const modalHTML = `
-        <div class="modal fade" id="dettagliProdottoModal" tabindex="-1" aria-labelledby="dettagliProdottoModalLabel" aria-hidden="true">
+        <div class="modal fade" id="dettagliProdottoModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -43,26 +43,14 @@ function mostraModal(prodotto) {
     // Inserisci il modalHTML nel body del documento
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Ottieni l'elemento del modal
-    const modalElement = document.getElementById('dettagliProdottoModal');
-
-    // Crea un observer per monitorare l'attributo aria-hidden del modal
-    const observer = new MutationObserver(mutationsList => {
-        for (const mutation of mutationsList) {
-            if (mutation.attributeName === 'aria-hidden' && modalElement.getAttribute('aria-hidden') === 'true') {
-                // Rimuovi l'elemento del modal dal DOM quando viene nascosto
-                modalElement.remove();
-                observer.disconnect(); // Scollega l'observer dopo aver rimosso il modal
-            }
-        }
-    });
-
-    // Aggiungi l'observer all'elemento del modal
-    observer.observe(modalElement, { attributes: true });
-
     // Mostra il modal
-    const modal = new bootstrap.Modal(modalElement);
+    const modal = new bootstrap.Modal(document.getElementById('dettagliProdottoModal'));
     modal.show();
+
+    // Rimuovi l'elemento del modal dal DOM quando viene chiuso
+    modal._element.addEventListener('hidden.bs.modal', function (event) {
+        modal._element.remove();
+    });
 }
 
 document.addEventListener('DOMContentLoaded', caricaDatiTabella);
