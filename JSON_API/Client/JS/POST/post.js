@@ -1,4 +1,4 @@
-import { caricaDatiTabella } from "/JSON_API/Client/JS/GET/getall.js";
+import { caricaDatiTabella } from "../GET/getall.js";
 
 const serverURL = 'http://127.0.0.1:8081/products';
 
@@ -47,7 +47,7 @@ function mostraModaleInserimento() {
                             </div>
                             <div class="mb-3">
                                 <label for="prezzoInput" class="form-label">Prezzo</label>
-                                <input type="number" class="form-control" id="prezzoInput">
+                                <input type="number" class="form-control" id="prezzoInput" MIN="1">
                             </div>
                         </form>
                     </div>
@@ -70,9 +70,13 @@ function mostraModaleInserimento() {
 }
 
 function salvaNuovoProdotto() {
-    const nome = document.getElementById('nomeInput').value;
-    const marca = document.getElementById('marcaInput').value;
-    const prezzo = parseFloat(document.getElementById('prezzoInput').value);
+    const nomeInput = document.getElementById('nomeInput');
+    const marcaInput = document.getElementById('marcaInput');
+    const prezzoInput = document.getElementById('prezzoInput');
+
+    const nome = nomeInput.value;
+    const marca = marcaInput.value;
+    const prezzo = parseFloat(prezzoInput.value);
 
     if (nome && marca) {
         const nuovoProdotto = {
@@ -80,12 +84,21 @@ function salvaNuovoProdotto() {
             marca: marca,
             prezzo: prezzo ? prezzo : null
         };
+
         inviaNuovoProdotto(nuovoProdotto);
+
+        // Reimposta i valori delle caselle di testo a vuoti
+        nomeInput.value = '';
+        marcaInput.value = '';
+        prezzoInput.value = '';
+
+        // Chiudi il modale
+        const modal = bootstrap.Modal.getInstance(document.getElementById('inserimentoProdottoModal'));
+        modal.hide();
     } else {
         alert('Per favore, compila tutti i campi obbligatori.');
     }
 }
-
 document.addEventListener('DOMContentLoaded', function() {
     // Aggiungi event listener al pulsante "Crea"
     const creaProdottoBtn = document.getElementById('creaProdottoBtn');

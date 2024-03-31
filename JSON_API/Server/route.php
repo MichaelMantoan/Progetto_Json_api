@@ -1,7 +1,7 @@
 <?php
 // Includi il file contenente la definizione della classe Product
 require_once "product.php";
-$clientURL = $_SERVER['HTTP_ORIGIN'];
+ $clientURL = $_SERVER['HTTP_ORIGIN'];
 // Verifica se l'origine della richiesta corrisponde all'URL del tuo client
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     // Abilita CORS solo per l'URL del tuo client
@@ -57,6 +57,18 @@ function handleRequest()
     http_response_code(404);
     echo "404 Not Found";
 }
+
+// Aggiungi una route per gestire le richieste di preflight OPTIONS
+addRoute('OPTIONS', '/products', function () {
+    // Invia le intestazioni CORS appropriate
+    global $clientURL;
+    header("Access-Control-Allow-Origin: $clientURL");
+    header("Access-Control-Allow-Headers: Content-Type, X-Requested-With");
+    header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE");
+    header("Content-Length: 0");
+    http_response_code(204);
+    exit();
+});
 
 
 addRoute('GET', '/products/(\d+)', function ($matches) {
