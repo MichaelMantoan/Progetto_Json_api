@@ -10,30 +10,34 @@
     <!-- Link al file JavaScript di Bootstrap tramite CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Link al file JavaScript CRUD.js -->
+
     <script src="JS/GET/getall.js" type="module"></script>
     <script src="JS/GET/get.js" type="module"></script>
-    <style></style>
-</head>
-<body>
+    <script src="JS/POST/post.js" type="module"></script>
 
-<div class="container mt-5">
-    <h2>Tabella Prodotti</h2>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Marca</th>
-            <th>Prezzo</th>
-            <th>Azioni</th>
-        </tr>
-        </thead>
-        <tbody id="productTableBody">
-        <!-- Righe della tabella verranno inserite dinamicamente qui -->
+     <style></style>
+ </head>
+ <body>
+
+ <div class="container mt-5">
+     <h2>Tabella Prodotti</h2>
+     <table class="table table-striped">
+         <thead>
+         <tr>
+             <th>ID</th>
+             <th>Nome</th>
+             <th>Marca</th>
+             <th>Prezzo</th>
+             <th>Azioni</th>
+         </tr>
+         </thead>
+         <tbody id="productTableBody">
+         <!-- Righe della tabella verranno inserite dinamicamente qui -->
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary" onclick="ApriModale('Crea')">Crea</button>
-</div>
+     <button type="button" class="btn btn-primary" id="creaProdottoBtn">Crea</button>
+
+ </div>
 
 <!-- Modale per Azioni -->
 <div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="actionModalLabel"
