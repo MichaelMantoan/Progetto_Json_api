@@ -1,4 +1,6 @@
 import { mostraDettagli } from "./get.js";
+import { confermaEliminazione } from "../DELETE/delete.js";
+import { mostraModaleModifica } from "../PATCH/patch.js"; // Importa la funzione per mostrare il modale di modifica
 
 const serverURL = 'http://127.0.0.1:8081/products';
 
@@ -24,19 +26,26 @@ export function caricaDatiTabella() {
                         <td>${prodotto.attributes.marca}</td>
                         <td>${prodotto.attributes.prezzo}</td>
                         <td>
-                            <button class="btn btn-primary show-btn" >Show</button>
+                            <button class="btn btn-primary show-btn">Show</button>
                             <button class="btn btn-success edit-btn">Edit</button>
-                            <button class="btn btn-danger delete-btn">Delete</button>
+                            <button class="btn btn-danger delete-btn" data-id="${prodotto.id}">Delete</button>
                         </td>
                     `;
                 tbody.appendChild(riga);
-
 
                 riga.querySelector('.show-btn').addEventListener('click', () => {
                     mostraDettagli(prodotto.id);
                 });
 
+                riga.querySelector('.delete-btn').addEventListener('click', (event) => {
+                    const idProdotto = event.target.dataset.id;
+                    confermaEliminazione(idProdotto);
+                });
 
+                riga.querySelector('.edit-btn').addEventListener('click', () => {
+                    const idProdotto = prodotto.id;
+                    mostraModaleModifica(idProdotto); // Chiamata alla funzione per mostrare il modale di modifica
+                });
             });
         })
         .catch(error => console.error(error.message));

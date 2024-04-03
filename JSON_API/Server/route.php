@@ -64,9 +64,19 @@ addRoute('OPTIONS', '/products', function () {
     global $clientURL;
     header("Access-Control-Allow-Origin: $clientURL");
     header("Access-Control-Allow-Headers: Content-Type, X-Requested-With");
-    header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE");
+    header("Access-Control-Allow-Methods:  GET,POST");
     header("Content-Length: 0");
-    http_response_code(204);
+    http_response_code(200);
+    exit();
+});
+addRoute('OPTIONS', '/products/(\d+)', function () {
+    // Invia le intestazioni CORS appropriate
+    global $clientURL;
+    header("Access-Control-Allow-Origin: $clientURL");
+    header("Access-Control-Allow-Headers: Content-Type, X-Requested-With");
+    header("Access-Control-Allow-Methods: GET, PATCH, DELETE");
+    header("Content-Length: 0");
+    http_response_code(200);
     exit();
 });
 
@@ -204,12 +214,8 @@ addRoute('DELETE', '/products/(\d+)', function ($id) {
     $product = Product::Find($newID[1]);
     if ($product) {
         if ($product->Delete()) {
-            header("Location: /products/(\d+)");
-            header('Content-Type: application/vnd.api+json');
             http_response_code(204);
         } else {
-            header("Location: /products/(\d+)");
-            header('Content-Type: application/vnd.api+json');
             http_response_code(500);
             echo json_encode(['error' => 'Errore durante l\'eliminazione del prodotto']);
         }
