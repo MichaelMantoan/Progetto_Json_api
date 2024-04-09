@@ -104,6 +104,4 @@ document.addEventListener('DOMContentLoaded', function() {
     const creaProdottoBtn = document.getElementById('creaProdottoBtn');
     creaProdottoBtn.addEventListener('click', mostraModaleInserimento);
 
-    // Carica i dati della tabella dopo che la pagina è stata caricata
-    caricaDatiTabella();
 });

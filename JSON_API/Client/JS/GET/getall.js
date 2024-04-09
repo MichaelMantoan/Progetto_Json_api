@@ -1,6 +1,6 @@
-import { mostraDettagli } from "./get.js";
-import { confermaEliminazione } from "../DELETE/delete.js";
-import { mostraModaleModifica } from "../PATCH/patch.js"; // Importa la funzione per mostrare il modale di modifica
+import {mostraDettagli} from "./get.js";
+import {confermaEliminazione} from "../DELETE/delete.js";
+import {mostraModaleModifica} from "../PATCH/patch.js"; // Importa la funzione per mostrare il modale di modifica
 
 const serverURL = 'http://127.0.0.1:8081/products';
 
@@ -21,16 +21,18 @@ export function caricaDatiTabella() {
                 console.log(prodotto);
                 const riga = document.createElement('tr');
                 riga.innerHTML = `
-                        <td>${prodotto.id}</td>
-                        <td>${prodotto.attributes.nome}</td>
-                        <td>${prodotto.attributes.marca}</td>
-                        <td>${prodotto.attributes.prezzo}</td>
-                        <td>
-                            <button class="btn btn-primary show-btn">Show</button>
-                            <button class="btn btn-success edit-btn">Edit</button>
-                            <button class="btn btn-danger delete-btn" data-id="${prodotto.id}">Delete</button>
-                        </td>
-                    `;
+                     <td>${prodotto.id}</td>
+                     <td>${prodotto.attributes.nome}</td>
+                     <td>${prodotto.attributes.marca}</td>
+                     <td>${prodotto.attributes.prezzo}</td>
+                <td>
+                    <button class="btn btn-primary show-btn">Show</button>
+                    <button class="btn btn-success edit-btn">Edit</button>
+                     <button class="btn btn-danger delete-btn" data-id="${prodotto.id}">Delete</button>
+    </td>
+`;
+                riga.id = `row-${prodotto.id}`;
+
                 tbody.appendChild(riga);
 
                 riga.querySelector('.show-btn').addEventListener('click', () => {

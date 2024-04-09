@@ -12,7 +12,8 @@ export function eliminaProdotto(idProdotto) {
             if (!response.ok) {
                 throw new Error('Errore durante l\'eliminazione del prodotto');
             }
-            caricaDatiTabella();
+
+
         })
         .catch(error => console.error(error.message));
 }
@@ -21,5 +22,6 @@ export function eliminaProdotto(idProdotto) {
 export function confermaEliminazione(idProdotto) {
     if (confirm('Sei sicuro di voler eliminare questo prodotto?')) {
         eliminaProdotto(idProdotto);
+        document.getElementById(`row-${idProdotto}`).remove();
     }
 }

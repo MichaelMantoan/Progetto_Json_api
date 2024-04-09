@@ -20,9 +20,20 @@ export function inviaModificheProdotto(idProdotto, modifiche) {
         })
         .then(data => {
             console.log('Modifiche inviate con successo:', data);
-            caricaDatiTabella();
+
         })
         .catch(error => console.error(error.message));
+}
+ function modificaRigaTabella(idProdotto, modifiche) {
+    const riga = document.getElementById(`row-${idProdotto}`);
+    if (riga) {
+        // Modifica i dati della riga con le modifiche ricevute
+        riga.querySelector('.nome').textContent = modifiche.nome;
+        riga.querySelector('.marca').textContent = modifiche.marca;
+        riga.querySelector('.prezzo').textContent = modifiche.prezzo;
+    } else {
+        console.error('Riga non trovata nella tabella');
+    }
 }
 
 export function mostraModaleModifica(idProdotto) {
@@ -107,8 +118,4 @@ export function mostraModaleModifica(idProdotto) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Carica i dati della tabella dopo che la pagina è stata caricata
-    caricaDatiTabella();
-});
 
