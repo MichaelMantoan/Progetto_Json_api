@@ -1,4 +1,7 @@
 import { caricaDatiTabella } from "../GET/getall.js";
+import {mostraDettagli} from "../GET/get";
+import {confermaEliminazione} from "../DELETE/delete";
+import {mostraModaleModifica} from "../PATCH/patch";
 
 const serverURL = 'http://127.0.0.1:8081/products';
 
@@ -16,11 +19,43 @@ function inviaNuovoProdotto(nuovoProdotto) {
             if (!response.ok) {
                 throw new Error('Errore durante l\'invio del nuovo prodotto');
             }
-            return response.json();
-        })
+            return response.json();})
         .then(data => {
-            console.log('Prodotto inviato con successo:', data);
+            const product = data.data;
+            var tablebody = document.getElementById("productTableBody");
+            var riga = document.createElement("tr");
+            console.log(product.nome);
+            riga.innerHTML =
+                '<td>'+ product.id + '</td>' +
+                '<td>'+ product.attributes.nome + '</td>' +
+                '<td>'+ product.attributes.marca + '</td>' +
+                '<td>'+ product.attributes.prezzo + '</td>' +
+            <td>
+                <button className="btn btn-primary show-btn">Show</button>
+                <button className="btn btn-success edit-btn">Edit</button>
+                <button className="btn btn-danger delete-btn" data-id="${prodotto.id}">Delete</button>
+            </td>;
+
+            tablebody.appendChild(riga);
+            riga.querySelector('.show-btn').addEventListener('click', () => {
+                mostraDettagli(product.id);
+            });
+
+            riga.querySelector('.delete-btn').addEventListener('click', (event) => {
+                const idProdotto = event.target.dataset.id;
+                confermaEliminazione(idProdotto);
+            });
+
+            riga.querySelector('.edit-btn').addEventListener('click', () => {
+                const idProdotto = product.id;
+                mostraModaleModifica(idProdotto); // Chiamata alla funzione per mostrare il modale di modifica
+            });
+
+
         })
+
+
+
         .catch(error => console.error(error.message));
 }
 
