@@ -3,6 +3,7 @@ import {confermaEliminazione} from "../DELETE/delete.js";
 import {mostraModaleModifica} from "../PATCH/patch.js"; // Importa la funzione per mostrare il modale di modifica
 
 const serverURL = 'http://127.0.0.1:8081/products';
+export let indice = 0
 
 export function caricaDatiTabella() {
     fetch(serverURL)
@@ -51,6 +52,7 @@ export function caricaDatiTabella() {
             });
         })
         .catch(error => console.error(error.message));
+    indice++;
 }
 
 // Chiamata iniziale per caricare i dati della tabella all'avvio della pagina

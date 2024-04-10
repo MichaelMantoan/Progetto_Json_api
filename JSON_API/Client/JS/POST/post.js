@@ -2,7 +2,27 @@ import {mostraDettagli} from "../GET/get.js";
 import {confermaEliminazione} from "../DELETE/delete.js";
 import {mostraModaleModifica} from "../PATCH/patch.js";
 
+
 const serverURL = 'http://127.0.0.1:8081/products';
+function associareEventiBottoni(id) {
+    document.querySelectorAll('.show-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            mostraDettagli(id);
+        });
+    });
+
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            mostraModaleModifica(id);
+        });
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            confermaEliminazione(id);
+        });
+    });
+}
 
 function inviaNuovoProdotto(nuovoProdotto) {
     const requestOptions = {
@@ -25,7 +45,7 @@ function inviaNuovoProdotto(nuovoProdotto) {
             const product = data.data;
             var tablebody = document.getElementById("productTableBody");
             var riga = document.createElement("tr");
-            console.log(product.nome);
+            console.log(product.id);
             riga.innerHTML =
                 '<td>' + product.id + '</td>' +
                 '<td>' + product.attributes.nome + '</td>' +
@@ -39,20 +59,7 @@ function inviaNuovoProdotto(nuovoProdotto) {
 
             riga.id = `row-${product.id}`;
             tablebody.appendChild(riga);
-
-            riga.querySelector('.show-btn').addEventListener('click', () => {
-                mostraDettagli(product.id);
-            });
-
-            riga.querySelector('.delete-btn').addEventListener('click', (event) => {
-                const idProdotto = event.target.dataset.id;
-                confermaEliminazione(idProdotto);
-            });
-
-            riga.querySelector('.edit-btn').addEventListener('click', () => {
-                const idProdotto = product.id;
-                mostraModaleModifica(idProdotto); // Chiamata alla funzione per mostrare il modale di modifica
-            });
+            associareEventiBottoni(product.id);
         });
 }
 
