@@ -1,7 +1,6 @@
-import { caricaDatiTabella } from "../GET/getall.js";
-import {mostraDettagli} from "../GET/get";
-import {confermaEliminazione} from "../DELETE/delete";
-import {mostraModaleModifica} from "../PATCH/patch";
+import {mostraDettagli} from "../GET/get.js";
+import {confermaEliminazione} from "../DELETE/delete.js";
+import {mostraModaleModifica} from "../PATCH/patch.js";
 
 const serverURL = 'http://127.0.0.1:8081/products';
 
@@ -11,7 +10,7 @@ function inviaNuovoProdotto(nuovoProdotto) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ data: { attributes: nuovoProdotto } })
+        body: JSON.stringify({data: {attributes: nuovoProdotto}})
     };
 
     fetch(serverURL, requestOptions)
@@ -19,24 +18,28 @@ function inviaNuovoProdotto(nuovoProdotto) {
             if (!response.ok) {
                 throw new Error('Errore durante l\'invio del nuovo prodotto');
             }
-            return response.json();})
+            return response.json();
+        })
         .then(data => {
+            console.log('Prodotto inviato con successo:', data);
             const product = data.data;
             var tablebody = document.getElementById("productTableBody");
             var riga = document.createElement("tr");
             console.log(product.nome);
             riga.innerHTML =
-                '<td>'+ product.id + '</td>' +
-                '<td>'+ product.attributes.nome + '</td>' +
-                '<td>'+ product.attributes.marca + '</td>' +
-                '<td>'+ product.attributes.prezzo + '</td>' +
-            <td>
-                <button className="btn btn-primary show-btn">Show</button>
-                <button className="btn btn-success edit-btn">Edit</button>
-                <button className="btn btn-danger delete-btn" data-id="${prodotto.id}">Delete</button>
-            </td>;
+                '<td>' + product.id + '</td>' +
+                '<td>' + product.attributes.nome + '</td>' +
+                '<td>' + product.attributes.marca + '</td>' +
+                '<td>' + product.attributes.prezzo + '</td>' +
+                '<td>' +
+                '<button class="btn btn-primary show-btn">Show</button>' +
+                '<button class="btn btn-success edit-btn">Edit</button>' +
+                '<button class="btn btn-danger delete-btn" data-id="' + product.id + '">Delete</button>' +
+                '</td>';
 
+            riga.id = `row-${product.id}`;
             tablebody.appendChild(riga);
+
             riga.querySelector('.show-btn').addEventListener('click', () => {
                 mostraDettagli(product.id);
             });
@@ -50,18 +53,12 @@ function inviaNuovoProdotto(nuovoProdotto) {
                 const idProdotto = product.id;
                 mostraModaleModifica(idProdotto); // Chiamata alla funzione per mostrare il modale di modifica
             });
-
-
-        })
-
-
-
-        .catch(error => console.error(error.message));
+        });
 }
 
-function mostraModaleInserimento() {
+    function mostraModaleInserimento() {
 
-    const modalHTML = `
+        const modalHTML = `
         <div class="modal fade" id="inserimentoProdottoModal" tabindex="-1" aria-labelledby="inserimentoProdottoModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -94,48 +91,49 @@ function mostraModaleInserimento() {
         </div>
     `;
 
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    const modal = new bootstrap.Modal(document.getElementById('inserimentoProdottoModal'));
-    modal.show();
+        const modal = new bootstrap.Modal(document.getElementById('inserimentoProdottoModal'));
+        modal.show();
 
-    const salvaProdottoBtn = document.getElementById('salvaProdottoBtn');
-    salvaProdottoBtn.addEventListener('click', salvaNuovoProdotto);
-}
-
-function salvaNuovoProdotto() {
-    const nomeInput = document.getElementById('nomeInput');
-    const marcaInput = document.getElementById('marcaInput');
-    const prezzoInput = document.getElementById('prezzoInput');
-
-    const nome = nomeInput.value;
-    const marca = marcaInput.value;
-    const prezzo = parseFloat(prezzoInput.value);
-
-    if (nome && marca) {
-        const nuovoProdotto = {
-            nome: nome,
-            marca: marca,
-            prezzo: prezzo ? prezzo : null
-        };
-
-        inviaNuovoProdotto(nuovoProdotto);
-
-        // Reimposta i valori delle caselle di testo a vuoti
-        nomeInput.value = '';
-        marcaInput.value = '';
-        prezzoInput.value = '';
-
-        // Chiudi il modale
-        const modal = bootstrap.Modal.getInstance(document.getElementById('inserimentoProdottoModal'));
-        modal.hide();
-    } else {
-        alert('Per favore, compila tutti i campi obbligatori.');
+        const salvaProdottoBtn = document.getElementById('salvaProdottoBtn');
+        salvaProdottoBtn.addEventListener('click', salvaNuovoProdotto);
     }
-}
-document.addEventListener('DOMContentLoaded', function() {
-    // Aggiungi event listener al pulsante "Crea"
-    const creaProdottoBtn = document.getElementById('creaProdottoBtn');
-    creaProdottoBtn.addEventListener('click', mostraModaleInserimento);
 
-});
+    function salvaNuovoProdotto() {
+        const nomeInput = document.getElementById('nomeInput');
+        const marcaInput = document.getElementById('marcaInput');
+        const prezzoInput = document.getElementById('prezzoInput');
+
+        const nome = nomeInput.value;
+        const marca = marcaInput.value;
+        const prezzo = parseFloat(prezzoInput.value);
+
+        if (nome && marca) {
+            const nuovoProdotto = {
+                nome: nome,
+                marca: marca,
+                prezzo: prezzo ? prezzo : null
+            };
+
+            inviaNuovoProdotto(nuovoProdotto);
+
+            // Reimposta i valori delle caselle di testo a vuoti
+            nomeInput.value = '';
+            marcaInput.value = '';
+            prezzoInput.value = '';
+
+            // Chiudi il modale
+            const modal = bootstrap.Modal.getInstance(document.getElementById('inserimentoProdottoModal'));
+            modal.hide();
+        } else {
+            alert('Per favore, compila tutti i campi obbligatori.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const creaProdottoBtn = document.getElementById('creaProdottoBtn');
+        creaProdottoBtn.addEventListener('click', mostraModaleInserimento);
+
+
+    });
