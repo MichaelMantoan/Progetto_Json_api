@@ -1,4 +1,4 @@
-import { caricaDatiTabella } from "../GET/getall.js";
+
 
 const serverURL = 'http://127.0.0.1:8081/products';
 
@@ -24,17 +24,19 @@ export function inviaModificheProdotto(idProdotto, modifiche) {
         })
         .catch(error => console.error(error.message));
 }
- function modificaRigaTabella(idProdotto, modifiche) {
+function modificaRigaTabella(idProdotto, modifiche) {
     const riga = document.getElementById(`row-${idProdotto}`);
     if (riga) {
         // Modifica i dati della riga con le modifiche ricevute
-        riga.querySelector('.nome').textContent = modifiche.nome;
-        riga.querySelector('.marca').textContent = modifiche.marca;
-        riga.querySelector('.prezzo').textContent = modifiche.prezzo;
+        riga.cells[1].innerText = modifiche.nome;
+        riga.cells[2].innerText = modifiche.marca;
+        riga.cells[3].innerText = modifiche.prezzo;
+
     } else {
         console.error('Riga non trovata nella tabella');
     }
 }
+
 
 export function mostraModaleModifica(idProdotto) {
     const modalHTML = `
@@ -109,7 +111,7 @@ export function mostraModaleModifica(idProdotto) {
             };
 
             inviaModificheProdotto(idProdotto, modifiche);
-
+            modificaRigaTabella(idProdotto, modifiche);
             // Chiudi il modale
             modal.hide();
         } else {
@@ -117,5 +119,4 @@ export function mostraModaleModifica(idProdotto) {
         }
     });
 }
-
 

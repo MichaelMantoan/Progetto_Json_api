@@ -20,7 +20,6 @@ function inviaNuovoProdotto(nuovoProdotto) {
         })
         .then(data => {
             console.log('Prodotto inviato con successo:', data);
-            caricaDatiTabella();
         })
         .catch(error => console.error(error.message));
 }
