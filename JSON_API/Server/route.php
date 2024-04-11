@@ -67,7 +67,7 @@ addRoute('OPTIONS', '/products', function () {
     header("Access-Control-Allow-Methods:  GET,POST");
     header("Content-Length: 0");
     http_response_code(200);
-    exit();
+
 });
 addRoute('OPTIONS', '/products/(\d+)', function () {
     // Invia le intestazioni CORS appropriate
@@ -77,7 +77,7 @@ addRoute('OPTIONS', '/products/(\d+)', function () {
     header("Access-Control-Allow-Methods: GET, PATCH, DELETE");
     header("Content-Length: 0");
     http_response_code(200);
-    exit();
+
 });
 
 

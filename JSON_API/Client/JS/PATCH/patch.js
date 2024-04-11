@@ -1,5 +1,4 @@
 
-
 const serverURL = 'http://127.0.0.1:8081/products';
 
 export function inviaModificheProdotto(idProdotto, modifiche) {
@@ -24,6 +23,7 @@ export function inviaModificheProdotto(idProdotto, modifiche) {
         })
         .catch(error => console.error(error.message));
 }
+
 function modificaRigaTabella(idProdotto, modifiche) {
     const riga = document.getElementById(`row-${idProdotto}`);
     if (riga) {

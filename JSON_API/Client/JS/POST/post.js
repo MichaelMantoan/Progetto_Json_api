@@ -1,28 +1,8 @@
-import {mostraDettagli} from "../GET/get.js";
-import {confermaEliminazione} from "../DELETE/delete.js";
-import {mostraModaleModifica} from "../PATCH/patch.js";
-
+import { mostraDettagli } from "../GET/get.js";
+import { confermaEliminazione } from "../DELETE/delete.js";
+import { mostraModaleModifica } from "../PATCH/patch.js";
 
 const serverURL = 'http://127.0.0.1:8081/products';
-function associareEventiBottoni(id) {
-    document.querySelectorAll('.show-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            mostraDettagli(id);
-        });
-    });
-
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            mostraModaleModifica(id);
-        });
-    });
-
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            confermaEliminazione(id);
-        });
-    });
-}
 
 function inviaNuovoProdotto(nuovoProdotto) {
     const requestOptions = {
@@ -30,7 +10,7 @@ function inviaNuovoProdotto(nuovoProdotto) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({data: {attributes: nuovoProdotto}})
+        body: JSON.stringify({ data: { attributes: nuovoProdotto } })
     };
 
     fetch(serverURL, requestOptions)
@@ -45,27 +25,39 @@ function inviaNuovoProdotto(nuovoProdotto) {
             const product = data.data;
             var tablebody = document.getElementById("productTableBody");
             var riga = document.createElement("tr");
-            console.log(product.id);
-            riga.innerHTML =
-                '<td>' + product.id + '</td>' +
-                '<td>' + product.attributes.nome + '</td>' +
-                '<td>' + product.attributes.marca + '</td>' +
-                '<td>' + product.attributes.prezzo + '</td>' +
-                '<td>' +
-                '<button class="btn btn-primary show-btn">Show</button>' +
-                '<button class="btn btn-success edit-btn">Edit</button>' +
-                '<button class="btn btn-danger delete-btn" data-id="' + product.id + '">Delete</button>' +
-                '</td>';
-
+            riga.innerHTML = `
+                     <td>${product.id}</td>
+                     <td>${product.attributes.nome}</td>
+                     <td>${product.attributes.marca}</td>
+                     <td>${product.attributes.prezzo}</td>
+                <td>
+                    <button class="btn btn-primary show-btn">Show</button>
+                    <button class="btn btn-success edit-btn">Edit</button>
+                     <button class="btn btn-danger delete-btn" data-id="${product.id}">Delete</button>
+    </td>
+`;
             riga.id = `row-${product.id}`;
             tablebody.appendChild(riga);
-            associareEventiBottoni(product.id);
+
+            riga.querySelector('.show-btn').addEventListener('click', () => {
+                mostraDettagli(product.id);
+            });
+
+            riga.querySelector('.delete-btn').addEventListener('click', (event) => {
+                const idProdotto = event.target.dataset.id;
+                confermaEliminazione(idProdotto);
+            });
+
+            riga.querySelector('.edit-btn').addEventListener('click', () => {
+                const idProdotto = product.id;
+                mostraModaleModifica(idProdotto); // Chiamata alla funzione per mostrare il modale di modifica
+            });
         });
 }
 
-    function mostraModaleInserimento() {
+function mostraModaleInserimento() {
 
-        const modalHTML = `
+    const modalHTML = `
         <div class="modal fade" id="inserimentoProdottoModal" tabindex="-1" aria-labelledby="inserimentoProdottoModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -76,16 +68,16 @@ function inviaNuovoProdotto(nuovoProdotto) {
                     <div class="modal-body">
                         <form id="nuovoProdottoForm">
                             <div class="mb-3">
-                                <label for="nomeInput" class="form-label">Nome</label>
-                                <input type="text" class="form-control" id="nomeInput" required>
+                                <label for="nuovoNomeInput" class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="nuovoNomeInput" required>
                             </div>
                             <div class="mb-3">
-                                <label for="marcaInput" class="form-label">Marca</label>
-                                <input type="text" class="form-control" id="marcaInput" required>
+                                <label for="nuovoMarcaInput" class="form-label">Marca</label>
+                                <input type="text" class="form-control" id="nuovoMarcaInput" required>
                             </div>
                             <div class="mb-3">
-                                <label for="prezzoInput" class="form-label">Prezzo</label>
-                                <input type="number" class="form-control" id="prezzoInput" MIN="1">
+                                <label for="nuovoPrezzoInput" class="form-label">Prezzo</label>
+                                <input type="number" class="form-control" id="nuovoPrezzoInput" min="1">
                             </div>
                         </form>
                     </div>
@@ -98,49 +90,47 @@ function inviaNuovoProdotto(nuovoProdotto) {
         </div>
     `;
 
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        const modal = new bootstrap.Modal(document.getElementById('inserimentoProdottoModal'));
-        modal.show();
+    const modal = new bootstrap.Modal(document.getElementById('inserimentoProdottoModal'));
+    modal.show();
 
-        const salvaProdottoBtn = document.getElementById('salvaProdottoBtn');
-        salvaProdottoBtn.addEventListener('click', salvaNuovoProdotto);
+    const salvaProdottoBtn = document.getElementById('salvaProdottoBtn');
+    salvaProdottoBtn.addEventListener('click', salvaNuovoProdotto);
+}
+
+function salvaNuovoProdotto() {
+    const nomeInput = document.getElementById('nuovoNomeInput');
+    const marcaInput = document.getElementById('nuovoMarcaInput');
+    const prezzoInput = document.getElementById('nuovoPrezzoInput');
+
+    const nome = nomeInput.value;
+    const marca = marcaInput.value;
+    const prezzo = parseFloat(prezzoInput.value);
+
+    if (nome && marca) {
+        const nuovoProdotto = {
+            nome: nome,
+            marca: marca,
+            prezzo: prezzo ? prezzo : null
+        };
+
+        inviaNuovoProdotto(nuovoProdotto);
+
+        // Reimposta i valori delle caselle di testo a vuoti
+        nomeInput.value = '';
+        marcaInput.value = '';
+        prezzoInput.value = '';
+
+        // Chiudi il modale
+        const modal = bootstrap.Modal.getInstance(document.getElementById('inserimentoProdottoModal'));
+        modal.hide();
+    } else {
+        alert('Per favore, compila tutti i campi obbligatori.');
     }
+}
 
-    function salvaNuovoProdotto() {
-        const nomeInput = document.getElementById('nomeInput');
-        const marcaInput = document.getElementById('marcaInput');
-        const prezzoInput = document.getElementById('prezzoInput');
-
-        const nome = nomeInput.value;
-        const marca = marcaInput.value;
-        const prezzo = parseFloat(prezzoInput.value);
-
-        if (nome && marca) {
-            const nuovoProdotto = {
-                nome: nome,
-                marca: marca,
-                prezzo: prezzo ? prezzo : null
-            };
-
-            inviaNuovoProdotto(nuovoProdotto);
-
-            // Reimposta i valori delle caselle di testo a vuoti
-            nomeInput.value = '';
-            marcaInput.value = '';
-            prezzoInput.value = '';
-
-            // Chiudi il modale
-            const modal = bootstrap.Modal.getInstance(document.getElementById('inserimentoProdottoModal'));
-            modal.hide();
-        } else {
-            alert('Per favore, compila tutti i campi obbligatori.');
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const creaProdottoBtn = document.getElementById('creaProdottoBtn');
-        creaProdottoBtn.addEventListener('click', mostraModaleInserimento);
-
-
-    });
+document.addEventListener('DOMContentLoaded', function () {
+    const creaProdottoBtn = document.getElementById('creaProdottoBtn');
+    creaProdottoBtn.addEventListener('click', mostraModaleInserimento);
+});
