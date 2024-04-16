@@ -64,8 +64,8 @@ export function mostraModaleModifica(idProdotto) {
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="salvaModificheBtn">Salva</button>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Annulla</button>
+                        <button type="button" class="btn btn-dark" id="salvaModificheBtn">Salva</button>
                     </div>
                 </div>
             </div>

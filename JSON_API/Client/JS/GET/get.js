@@ -24,7 +24,7 @@ function mostraModal(prodotto) {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="dettagliProdottoModalLabel">Dettagli Prodotto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn btn-dark btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p><strong>ID:</strong> ${prodotto.id}</p>

@@ -1,6 +1,6 @@
-import { mostraDettagli } from "../GET/get.js";
-import { confermaEliminazione } from "../DELETE/delete.js";
-import { mostraModaleModifica } from "../PATCH/patch.js";
+import {mostraDettagli} from "../GET/get.js";
+import {confermaEliminazione} from "../DELETE/delete.js";
+import {mostraModaleModifica} from "../PATCH/patch.js";
 
 const serverURL = 'http://127.0.0.1:8081/products';
 
@@ -10,7 +10,7 @@ function inviaNuovoProdotto(nuovoProdotto) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ data: { attributes: nuovoProdotto } })
+        body: JSON.stringify({data: {attributes: nuovoProdotto}})
     };
 
     fetch(serverURL, requestOptions)
@@ -31,9 +31,9 @@ function inviaNuovoProdotto(nuovoProdotto) {
                      <td>${product.attributes.marca}</td>
                      <td>${product.attributes.prezzo}</td>
                 <td>
-                    <button class="btn btn-primary show-btn">Show</button>
-                    <button class="btn btn-success edit-btn">Edit</button>
-                     <button class="btn btn-danger delete-btn" data-id="${product.id}">Delete</button>
+                    <button class="btn btn-dark show-btn">Show</button>
+                    <button class="btn btn-dark edit-btn">Edit</button>
+                     <button class="btn btn-dark delete-btn" data-id="${product.id}">Delete</button>
     </td>
 `;
             riga.id = `row-${product.id}`;
@@ -82,8 +82,8 @@ function mostraModaleInserimento() {
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="salvaProdottoBtn">Salva</button>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Annulla</button>
+                        <button type="button" class="btn btn-dark" id="salvaProdottoBtn">Salva</button>
                     </div>
                 </div>
             </div>

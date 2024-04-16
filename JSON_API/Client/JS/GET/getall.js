@@ -27,9 +27,9 @@ export function caricaDatiTabella() {
                      <td>${prodotto.attributes.marca}</td>
                      <td>${prodotto.attributes.prezzo}</td>
                 <td>
-                    <button class="btn btn-primary show-btn">Show</button>
-                    <button class="btn btn-success edit-btn">Edit</button>
-                     <button class="btn btn-danger delete-btn" data-id="${prodotto.id}">Delete</button>
+                    <button class="btn btn-dark show-btn">Show</button>
+                    <button class="btn btn-dark edit-btn">Edit</button>
+                     <button class=" btn btn-dark delete-btn" data-id="${prodotto.id}">Delete</button>
     </td>
 `;
                 riga.id = `row-${prodotto.id}`;

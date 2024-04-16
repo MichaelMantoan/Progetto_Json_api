@@ -1,57 +1,64 @@
-/* Stile per il body */
+/* Style.css */
+
+/* Font personalizzato */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa; /* Sfondo grigio chiaro */
 }
 
-/* Stile per il titolo della tabella */
+/* Colore di sfondo */
+body {
+    background-color: #f5f5f5; /* Grigio chiaro */
+}
+
+.container {
+    background-color: #fff; /* Bianco */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+}
+
 h2 {
-    color: #333;
-    text-align: center;
+    color: #333; /* Nero */
 }
 
 /* Stile per il pulsante "Crea" */
 #creaProdottoBtn {
-    margin-bottom: 20px;
-}
-
-/* Stile per il modale */
-.modal-dialog {
-    margin: 15% auto; /* Centra il modale verticalmente */
-}
-
-/* Stile per il contenuto del modale */
-.modal-content {
-    background-color: #fff; /* Sfondo bianco */
-    border: 1px solid #ced4da; /* Bordo grigio */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-}
-
-/* Stile per il titolo del modale */
-.modal-title {
-    color: #333; /* Testo scuro */
-}
-
-/* Stile per il footer del modale */
-.modal-footer {
-    text-align: right;
-    border-top: 1px solid #dee2e6; /* Bordo grigio per il footer */
-    padding-top: 10px; /* Spaziatura superiore */
-}
-
-/* Stile per il bottone "Chiudi" del modale */
-.modal-footer .btn-secondary {
-    background-color: #6c757d; /* Grigio */
-    color: #fff; /* Testo bianco */
-}
-
-/* Stile per il bottone "Salva" del modale */
-.modal-footer .btn-primary {
     background-color: #007bff; /* Blu */
-    color: #fff; /* Testo bianco */
+    border-color: #007bff; /* Blu */
 }
 
-/* Stile per il bottone "Salva" del modale al passaggio del mouse */
-.modal-footer .btn-primary:hover {
+#creaProdottoBtn:hover {
     background-color: #0056b3; /* Blu più scuro al passaggio del mouse */
+    border-color: #0056b3; /* Blu più scuro al passaggio del mouse */
+}
+
+/* Stile per la modalità "Azioni" */
+.modal-content {
+    background-color: #fff; /* Bianco */
+    border-radius: 8px;
+}
+
+.modal-title {
+    color: #333; /* Nero */
+}
+
+/* Stile per i pulsanti all'interno della modalità "Azioni" */
+.btn-primary {
+    background-color: #007bff; /* Blu */
+    border-color: #007bff; /* Blu */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Blu più scuro al passaggio del mouse */
+    border-color: #0056b3; /* Blu più scuro al passaggio del mouse */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Grigio */
+    border-color: #6c757d; /* Grigio */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Grigio più scuro al passaggio del mouse */
+    border-color: #5a6268; /* Grigio più scuro al passaggio del mouse */
 }
