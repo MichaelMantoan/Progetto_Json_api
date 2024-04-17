@@ -77,7 +77,7 @@ function mostraModaleInserimento() {
                             </div>
                             <div class="mb-3">
                                 <label for="nuovoPrezzoInput" class="form-label">Prezzo</label>
-                                <input type="number" class="form-control" id="nuovoPrezzoInput" min="1">
+                                <input type="number" class="form-control" id="nuovoPrezzoInput" min="0">
                             </div>
                         </form>
                     </div>

@@ -59,7 +59,7 @@ export function mostraModaleModifica(idProdotto) {
                             </div>
                             <div class="mb-3">
                                 <label for="prezzoInput" class="form-label">Prezzo</label>
-                                <input type="number" class="form-control" id="prezzoInput" min="1">
+                                <input type="number" class="form-control" id="prezzoInput" min="0">
                             </div>
                         </form>
                     </div>
